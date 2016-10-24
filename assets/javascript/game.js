@@ -23,176 +23,143 @@ $(document).ready(function() {
   var attack_power = [];
   var counter_power = [];
 
-console.log(hero_image[0]);
+  console.log(hero_image[0]);
 
-function it_is_over_9000(){
+  function it_is_over_9000(){
 
-  for (var i = 0; i < young_hero.length; i++) {
+    for (var i = 0; i < young_hero.length; i++) {
 
-    var x = Math.floor(Math.random(attack_power)*20) + 3;
-    var y = Math.floor(Math.random(attack_power)*10) + 3;
+      var x = Math.floor(Math.random(attack_power)*20) + 3;
+      var y = Math.floor(Math.random(attack_power)*10) + 3;
 
-    attack_power.push(x);
-    counter_power.push(y);
-
+      attack_power.push(x);
+      counter_power.push(y);
+    }
   }
 
-}
+  function ready_board(){
 
-function ready_board(){
+    it_is_over_9000();
 
-  it_is_over_9000();
-
-  for (var i = 0; i < young_hero.length; i++) {
-    var hero_btns = $("<button>");
-    hero_btns.addClass("hero hero_button");
-    hero_btns.attr({
-      "data-name": young_hero[i],
-      "data-health": health[i],
-      "data-image": hero_image[i],
-      "data-attack": attack_power[i],
-      "data-counter": counter_power[i],
-      "data-index": i
-    });
+    for (var i = 0; i < young_hero.length; i++) {
+      var hero_btns = $("<button>");
+      hero_btns.addClass("hero hero_button");
+      hero_btns.attr({
+        "data-name": young_hero[i],
+        "data-health": health[i],
+        "data-image": hero_image[i],
+        "data-attack": attack_power[i],
+        "data-counter": counter_power[i],
+        "data-index": i
+      });
 
 
-    hero_btns.text(young_hero[i]);
-    hero_btns.append(hero_image[i]);
-    hero_btns.append(health[i]);
+      hero_btns.text(young_hero[i]);
+      hero_btns.append(hero_image[i]);
+      hero_btns.append(health[i]);
 
-    $("#buttons").append(hero_btns);
-
+      $("#buttons").append(hero_btns);
+    }
   }
 
-}
+  function char(){
 
-function char(){
-
- $(".hero_button").on("click", function() {
-    var hero = $(this);
-    var hero_select = hero.data('index');
+    $(".hero_button").on("click", function() {
+      var hero_select = $(this).data('index');
    
 
-    for (var i = 0; i < young_hero.length; i++) {
+      for (var i = 0; i < young_hero.length; i++) {
 
-      //var attack = ;
+        //var attack = ;
       
-      if (i != hero_select){
+        if (i != hero_select){
 
-        var enemies = $("<button>");
-        enemies.addClass("hero enemy");
+          var enemies = $("<button>");
+          enemies.addClass("hero enemy");
           
-        enemies.attr({
-          "data-power" : it_is_over_9000(),
-          "data-name": young_hero[i],
-          "data-health": health[i],
-          "data-image": hero_image[i],
-          "data-attack": attack_power[i],
-          "data-counter": counter_power[i],
-          "data-index": i
-        });
+          enemies.attr({
+            "data-power" : it_is_over_9000(),
+            "data-name": young_hero[i],
+            "data-health": health[i],
+            "data-image": hero_image[i],
+            "data-attack": attack_power[i],
+            "data-counter": counter_power[i],
+            "data-index": i
+          });
 
-        enemies.text(young_hero[i]);
-        enemies.append(hero_image[i]);
-        enemies.append(health[i]);
+          enemies.text(young_hero[i]);
+          enemies.append(hero_image[i]);
+          enemies.append(health[i]);
 
-        $("#battle").append(enemies);
-
+          $("#battle").append(enemies);
+        }
       }
-
-    }
     
-    $("#buttons").html($(this).data('name','health','image'));
+      $("#buttons").html($(this).data('name','health','image'));
 
-    defender();
+      defender();
+    });
+  }
 
-  });
-}
+  function defender(){
 
-function defender(){
+    $(".enemy").on("click", function() {
 
-  $(".enemy").on("click", function() {
+      var enemy_select = $(this).data("index");
 
-    var enemy = $(this);
-    var enemy_select = enemy.data("index");
-    console.log(enemy_select);
-    for (var i = 0; i < young_hero.length; i++) {
+      console.log(enemy_select);
+
+      for (var i = 0; i < young_hero.length; i++) {
       
-      if (i == enemy_select) {
+        if (i == enemy_select) {
 
-        var defender = $("<button>");
-        defender.addClass("hero defender");
+          var defender = $("<button>");
+          defender.addClass("hero defender");
           
-        defender.attr({
-          "data-name": young_hero[i],
-          "data-health": health[i],
-          "data-image": hero_image[i],
-          "data-attack": attack_power[i],
-          "data-counter": counter_power[i],
-          "data-index": i
-        });
+          defender.attr({
+            "data-name": young_hero[i],
+            "data-health": health[i],
+            "data-image": hero_image[i],
+            "data-attack": attack_power[i],
+            "data-counter": counter_power[i],
+            "data-index": i
+          });
 
-        defender.text(young_hero[i]);
-        defender.append(hero_image[i]);
-        defender.append(health[i]);
+          defender.text(young_hero[i]);
+          defender.append(hero_image[i]);
+          defender.append(health[i]);
 
-        $("#defend").append(defender);
+          $("#defend").append(defender);
 
-        $(this).remove();
-
+          $(this).remove();
+        }
       }
 
-    }
+    });
+  }
 
-  
-
-  });
-
-}
 
   $(".defend_button").on("click" , function(){
 
-  //if ($("#battle").text() != "" && $("#defend").text() != "") {
+    var k = (parseInt($('.defender').data('health')) - parseInt($('.hero_button').data('attack')));
+    console.log(
+      $('.defender').data('health'), '<--- Updated data value \n', 
+      parseInt($('.defender').attr('data-health')), '<--- Non updated attribute'
+      );
+    $(".defender").data('health', k);
 
-    
-      if($(".defender").data("health") == 0){
+    if($(".defender").data("health") == 0){
+      $(".defender").remove();
+    } else {
 
-        $(".defender").remove();
-
-      } 
-
-        //$(".defender").attr("data-health",defender_health - hero_attack);
-
-        //var defender_health = $(".defender").data("health"); 
-        //var hero_attack = $(".hero_button").data("attack");
-
-        
-       // console.log(hero_attack);
-
-        //defender_health -= hero_attack;
-
-        //console.log(defender_health);
-
-        $(".defender").attr({
-          "data-health":  $(".defender").data("health") - $(".hero_button").data("attack")
-        });
-
-        //$(".defender").attr("health", defender_health - hero_attack);
-        //$(".defender").append(defender_health);
-
-      
-      
+    }
   });
+  
+
 
   
-ready_board();
-char();
-
-
-
-
-
-
+  ready_board();
+  char();
 });
 
 
